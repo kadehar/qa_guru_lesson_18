@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private Integer id;
