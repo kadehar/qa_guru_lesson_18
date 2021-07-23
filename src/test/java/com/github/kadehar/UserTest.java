@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import static com.github.kadehar.Specs.request;
 import static com.github.kadehar.Specs.responseSpec;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.hasItem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class UserTest {
@@ -63,5 +64,19 @@ public class UserTest {
                                     .extract().as(LombokUserData.class);
         // @formatter:on
         assertEquals(2, data.getUser().getId());
+    }
+
+    @Test
+    public void checkEmailUsingGroovy() {
+        // @formatter:off
+        given()
+            .spec(request)
+        .when()
+            .get("/users")
+        .then()
+            .log().body()
+            .body("data.findAll{it.email =~/.*?@reqres.in/}.email.flatten()",
+                        hasItem("eve.holt@reqres.in"));
+        // @formatter:on
     }
 }
